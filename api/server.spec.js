@@ -85,8 +85,10 @@ describe("SERVER", () => {
       expect(response.type).toBe("application/json");
     });
 
-    it.skip("should return expected content", async () => {
-      expect(true).toBe(false);
+    it("should return expected/defined content", async () => {
+      const newCharacter = { name: "nelly" };
+      const response = await request(server).post("/characters").send(newCharacter);;
+      expect(response.body).toBeDefined();
     });
   });
 
@@ -96,12 +98,10 @@ describe("SERVER", () => {
       expect(response.status).toBe(204);
     });
 
-    it.skip("should return json object", async () => {
-      expect(true).toBe(false);
+    it("should return json object", async () => {
+      const response = await request(server).delete("/characters/3");
+      expect(response.type).toBe("application/json");
     });
 
-    it.skip("should return expected content", async () => {
-      expect(true).toBe(false);
-    });
   });
 });
