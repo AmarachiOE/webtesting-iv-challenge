@@ -53,17 +53,24 @@ server.post("/characters", (req, res) => {
 
 server.delete("/characters/:id", (req, res) => {
   const characterId = req.params.id;
-  characters.remove(characterId).then(character => {
-    if (character) {
-      res.status(204).json(character);
-    } else {
-      res.status(400).json({ error: "The character with the specified ID does not exist." });
-    }
-  }).catch(err => {
-    res.status(500).json({
-      error: "The character could not be removed"
+  characters
+    .remove(characterId)
+    .then(character => {
+      if (character) {
+        res.status(204).json(character);
+      } else {
+        res
+          .status(400)
+          .json({
+            error: "The character with the specified ID does not exist."
+          });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: "The character could not be removed"
+      });
     });
-  });
-})
+});
 
 module.exports = server;

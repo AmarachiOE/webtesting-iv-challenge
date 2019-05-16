@@ -8,6 +8,8 @@ describe("CHARACTERS MODEL", () => {
   // prevent duplicate records when restarting test
   // before every test, go to hobbits table and truncate the table
 
+  // using beforeAll instead of beforeEach so I can maintain added characters to be able to remove them in latter tests
+
   beforeAll(async () => {
     await db("characters").truncate();
   });
