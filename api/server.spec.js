@@ -35,65 +35,72 @@ describe("SERVER", () => {
       expect(response.type).toBe("application/json");
     });
 
-    it("should return expected content", async () => {
+    it.skip("should return expected content", async () => {
       const expectedBody = [
-        {
-          id: 1,
-          name: "greg"
-        }
-      ];
+        { id: value, key: "value" },
+        { id: value, key: "value" },
+        { id: value, key: "value" }
+      ]; // what data are you expecting
       const response = await request(server).get("/characters");
       expect(response.body).toEqual(expectedBody);
     });
   });
 
-  describe("GET /characters/1", () => {
+  describe("GET /characters/2", () => {
+    // skip if using beforeEach on model.test instead of beforeAll
+
+    // using /characters/2 because I'm testing deleting character/1 on model.test
+
     it("should return 200 OK", async () => {
-      const response = await request(server).get("/characters/1");
+      const response = await request(server).get("/characters/2");
       expect(response.status).toBe(200);
     });
 
     it("should return json object", async () => {
-      const response = await request(server).get("/characters/1");
+      const response = await request(server).get("/characters/2");
       expect(response.type).toBe("application/json");
     });
 
     it("should return expected content", async () => {
       const expectedBody = {
-          id: 1,
-          name: "greg"
-        };
-      const response = await request(server).get("/characters/1");
+        id: 2,
+        name: "nancy"
+      };
+      const response = await request(server).get("/characters/2");
       expect(response.body).toEqual(expectedBody);
     });
   });
 
-  describe.skip("POST /characters", () => {
+  describe("POST /characters", () => {
     it("should return 201 OK", async () => {
-      const response = await request(server).post("/characters");
-      expect(response.status).toBe(500);
+      const newCharacter = { name: "nelly" };
+      const response = await request(server)
+        .post("/characters")
+        .send(newCharacter);
+      expect(response.status).toBe(201);
     });
 
     it("should return json object", async () => {
-      expect(true).toBe(false);
+      const response = await request(server).post("/characters");
+      expect(response.type).toBe("application/json");
     });
 
-    it("should return expected content", async () => {
+    it.skip("should return expected content", async () => {
       expect(true).toBe(false);
     });
   });
 
-  describe.skip("DELETE /characters/:id", () => {
-    it("should return 200 OK", async () => {
-      const response = await request(server).get("/characters");
-      expect(response.status).toBe(500);
+  describe("DELETE /characters/:id", () => {
+    it("should return 204 OK", async () => {
+      const response = await request(server).delete("/characters/3");
+      expect(response.status).toBe(204);
     });
 
-    it("should return json object", async () => {
+    it.skip("should return json object", async () => {
       expect(true).toBe(false);
     });
 
-    it("should return expected content", async () => {
+    it.skip("should return expected content", async () => {
       expect(true).toBe(false);
     });
   });

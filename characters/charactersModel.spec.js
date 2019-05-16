@@ -5,43 +5,53 @@ const CharactersModel = require("./charactersModel.js");
 const db = require("../database/dbConfig.js");
 
 describe("CHARACTERS MODEL", () => {
+  // prevent duplicate records when restarting test
+  // before every test, go to hobbits table and truncate the table
 
-    // prevent duplicate records when restarting test
-    // before every test, go to hobbits table and truncate the table
+  beforeAll(async () => {
+    await db("characters").truncate();
+  });
 
-    beforeEach(async () => {
-        await db("characters").truncate();
-    });
-    
   // ======== getAll()
   describe("getAll()", () => {
     it("should return all characters", async () => {
-      expect(true).toBe(false);
+      const characters = await CharactersModel.getAll();
+      expect(characters).toBeTruthy();
+    });
+  });
+
+  // ======== add()
+  describe("add()", () => {
+    it("should add provided character(s)", async () => {
+      let newCharacter = await CharactersModel.add({ name: "greg" });
+      expect(newCharacter.name).toBe("greg");
+
+      newCharacter = await CharactersModel.add({ name: "nancy" });
+      expect(newCharacter.name).toBe("nancy");
+
+      newCharacter = await CharactersModel.add({ name: "timothy" });
+      expect(newCharacter.name).toBe("timothy");
+
+      const characters = await db("characters");
+      expect(characters).toHaveLength(3);
     });
   });
 
   // ======== getById()
   describe("getById()", () => {
     it("should return character by ID", async () => {
-      expect(true).toBe(false);
-    });
-  });
-  
-  // ======== add()
-  describe.only("add()", () => {
-    it("should add provided character", async () => {
-      await CharactersModel.add({ name: "greg" });
-
-      const characters = await db("characters");
-
-      expect(characters).toHaveLength(1);
+      const character = await CharactersModel.getById(1);
+      expect(character).toBeDefined(); // because truncating table before every test so there is nothing there
     });
   });
 
   // ======== remove()
   describe("remove()", () => {
     it("should remove provided character", async () => {
-      expect(true).toBe(false);
+      await CharactersModel.remove(1);
+
+      const characters = await db("characters");
+      expect(characters).toHaveLength(2);
     });
   });
 });
