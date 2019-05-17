@@ -35,33 +35,34 @@ describe("SERVER", () => {
       expect(response.type).toBe("application/json");
     });
 
-    it.skip("should return expected content", async () => {
-      const expectedBody = [
-        { id: value, key: "value" },
-        { id: value, key: "value" },
-        { id: value, key: "value" }
-      ]; // what data are you expecting
+    it("should return array content", async () => {
+      // what data are you expecting
+      // all I know is that the data will be in an array
+      // so setting expectedBody to empty array
+      const expectedBody = []; 
       const response = await request(server).get("/characters");
-      expect(response.body).toEqual(expectedBody);
+
+      // expect response to contain at least an array
+      expect(response.body).toEqual(expect.arrayContaining(expectedBody));
     });
   });
 
-  describe("GET /characters/2", () => {
+  describe("GET /characters/:id", () => {
     // skip if using beforeEach on model.test instead of beforeAll
 
     // using /characters/2 because I'm testing deleting character/1 on model.test
 
-    it("should return 200 OK", async () => {
+    it("should return 200 OK for id = 2", async () => {
       const response = await request(server).get("/characters/2");
       expect(response.status).toBe(200);
     });
 
-    it("should return json object", async () => {
+    it("should return json object for id = 2", async () => {
       const response = await request(server).get("/characters/2");
       expect(response.type).toBe("application/json");
     });
 
-    it("should return expected content", async () => {
+    it("should return expected content for id = 2", async () => {
       const expectedBody = {
         id: 2,
         name: "nancy"
@@ -77,7 +78,10 @@ describe("SERVER", () => {
       const response = await request(server)
         .post("/characters")
         .send(newCharacter);
+        //const id = response.body[0];
+       // console.log(response.body);
       expect(response.status).toBe(201);
+      expect(response.body.id).toBe(4);
     });
 
     it("should return json object", async () => {
